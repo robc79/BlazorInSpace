@@ -1,0 +1,29 @@
+﻿@page "/craft/{CraftName}"
+@using WhosInSpace.Models;
+@using WhosInSpace.Services;
+@inject IAstrosService AstrosService
+
+<h3>Astronauts</h3>
+
+<ul>
+    @foreach (var astro in CrewMembers)
+    {
+        <li>@astro.Name</li>
+    }
+</ul>
+
+<p><b>Total:</b> @CrewMembers.Count</p>
+
+@code {
+    [Parameter]
+    public string CraftName { get; set; }
+
+    public List<Astronaut> CrewMembers { get; set; } = new List<Astronaut>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var data = await AstrosService.GetAstrosAsync();
+        CrewMembers = data.People.Where(p => p.Craft == CraftName).ToList();
+    }
+}
