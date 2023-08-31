@@ -19,6 +19,6 @@
     {
         await base.OnInitializedAsync();
         var data = await AstrosService.GetAstrosAsync();
-        Spacecraft = data.People.Select(p => p.Craft).Distinct().ToList();
+        Spacecraft = data.People.Select(p => p.Craft).Distinct().OrderBy(p => p).ToList();
     }
 }

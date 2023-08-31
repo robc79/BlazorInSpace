@@ -16,14 +16,21 @@
 
 @code {
     [Parameter]
-    public string CraftName { get; set; }
+    public string? CraftName { get; set; }
 
     public List<Astronaut> CrewMembers { get; set; } = new List<Astronaut>();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        var data = await AstrosService.GetAstrosAsync();
-        CrewMembers = data.People.Where(p => p.Craft == CraftName).ToList();
+
+        var data = (CraftName == "Red Dwarf")
+            ? await AstrosService.GetEasterEggAsync()
+            : await AstrosService.GetAstrosAsync();
+
+        if (data != null)
+        {
+            CrewMembers = data.People.Where(p => p.Craft == CraftName).OrderBy(p => p.Name).ToList();
+        }
     }
 }

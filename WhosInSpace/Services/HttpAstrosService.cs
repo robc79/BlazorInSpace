@@ -6,7 +6,7 @@ namespace WhosInSpace.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpClient _httpClient;
-        private AstrosData _cachedData = null;
+        private AstrosData? _cachedData = null;
 
         public HttpAstrosService(IHttpClientFactory factory)
         {
@@ -22,6 +22,22 @@ namespace WhosInSpace.Services
             }
 
             return _cachedData;
+        }
+
+        public Task<AstrosData?> GetEasterEggAsync()
+        {
+            return Task.FromResult<AstrosData?>(new AstrosData
+            {
+                Message = "success",
+                Number = 4,
+                People = new List<Astronaut>
+                {
+                    new Astronaut { Craft = "Red Dwarf", Name = "Dave Lister" },
+                    new Astronaut { Craft = "Red Dwarf", Name = "Arnold Rimmer" },
+                    new Astronaut { Craft = "Red Dwarf", Name = "Kryten" },
+                    new Astronaut { Craft = "Red Dwarf", Name = "Cat" }
+                }
+            });
         }
     }
 }
