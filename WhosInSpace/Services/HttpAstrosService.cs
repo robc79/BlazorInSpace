@@ -4,14 +4,12 @@ namespace WhosInSpace.Services
 {
     public class HttpAstrosService : IAstrosService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly HttpClient _httpClient;
         private AstrosData? _cachedData = null;
 
-        public HttpAstrosService(IHttpClientFactory factory)
+        public HttpAstrosService(HttpClient httpClient)
         {
-            _httpClientFactory = factory ?? throw new ArgumentNullException(nameof(factory));
-            _httpClient = _httpClientFactory.CreateClient("Astros");
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         public async Task<AstrosData?> GetAstrosAsync()

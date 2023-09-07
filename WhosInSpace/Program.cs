@@ -12,20 +12,21 @@ namespace WhosInSpace
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddScoped<IAstrosService, HttpAstrosService>();
-            
-            builder.Services.AddHttpClient("Astros", (provider, client) =>
-            {
-                var config = provider.GetRequiredService<IConfiguration>();
-                var baseUrl = config.GetValue<string>("Astros:BaseUrl");
-                
-                if (string.IsNullOrWhiteSpace(baseUrl))
-                {
-                    throw new InvalidOperationException("Astros:BaseUrl not set.");
-                }
 
-                client.BaseAddress = new Uri(baseUrl!);
-            });
-            
+            builder.Services.AddHttpClient<IAstrosService, HttpAstrosService>(
+                (provider, client) =>
+                {
+                    var config = provider.GetRequiredService<IConfiguration>();
+                    var baseUrl = config.GetValue<string>("Astros:BaseUrl");
+
+                    if (string.IsNullOrWhiteSpace(baseUrl))
+                    {
+                        throw new InvalidOperationException("Astros:BaseUrl not set.");
+                    }
+
+                    client.BaseAddress = new Uri(baseUrl!);
+                });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
